@@ -60,34 +60,36 @@
 
   function showOverlay(success) {
     var overlay = document.createElement('div');
-    overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:10000;display:flex;align-items:center;justify-content:center;animation:fadeInUp .3s ease-out';
+    overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.75);z-index:10000;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(8px)';
     var box = document.createElement('div');
-    box.style.cssText = 'background:#141414;border:1px solid #00ff88;border-radius:12px;padding:40px;text-align:center;color:#fff;max-width:360px;margin:20px';
-    var check = document.createElement('div');
-    check.style.cssText = 'font-size:2.5rem;margin-bottom:16px';
-    check.textContent = '\u2713';
-    var title = document.createElement('div');
-    title.style.cssText = 'font-size:1.2rem;font-weight:700;margin-bottom:8px';
-    title.textContent = '\u0417\u0430\u044f\u0432\u043a\u0430 \u043e\u0442\u043f\u0440\u0430\u0432\u043b\u0435\u043d\u0430!';
-    var sub = document.createElement('div');
-    sub.style.cssText = 'font-size:0.9rem;color:#a0a0a0;margin-bottom:20px';
-    sub.textContent = '\u041c\u044b \u0441\u0432\u044f\u0436\u0435\u043c\u0441\u044f \u0441 \u0432\u0430\u043c\u0438 \u0432 \u0431\u043b\u0438\u0436\u0430\u0439\u0448\u0435\u0435 \u0432\u0440\u0435\u043c\u044f';
-    var btn = document.createElement('button');
-    btn.style.cssText = 'padding:12px 32px;border-radius:12px;background:#00ff88;color:#0a0a0a;border:none;font-weight:700;cursor:pointer;font-size:0.95rem';
-    btn.textContent = '\u041e\u0442\u043b\u0438\u0447\u043d\u043e';
-    btn.addEventListener('click', function() { overlay.remove(); });
-    box.appendChild(check);
-    box.appendChild(title);
-    box.appendChild(sub);
-    box.appendChild(btn);
+    box.style.cssText = 'background:#141414;border:1px solid ' + (success ? '#00ff88' : '#ff6b6b') + ';border-radius:16px;padding:48px 40px;text-align:center;color:#fff;max-width:420px;margin:20px;animation:fadeInUp .3s ease-out';
+    if (success) {
+      box.innerHTML = '<div style="font-size:3rem;margin-bottom:20px">&#10003;</div>' +
+        '<div style="font-size:1.3rem;font-weight:700;margin-bottom:12px">Спасибо!</div>' +
+        '<div style="font-size:0.95rem;color:#a0a0a0;line-height:1.6;margin-bottom:8px">Мы получили вашу заявку.</div>' +
+        '<div style="font-size:0.95rem;color:#a0a0a0;line-height:1.6;margin-bottom:8px">В ближайшее время специалист ZAYA свяжется с вами.</div>' +
+        '<div style="font-size:0.9rem;color:#00ff88;line-height:1.6;margin-bottom:20px">Вы попали в список первых клиентов и сможете приобрести контроллер по специальной цене — 30 000 ₽ вместо 40 000 ₽.</div>' +
+        '<div style="font-size:0.85rem;color:#555;margin-bottom:24px">Спасибо за доверие!<br>Команда ZAYA.</div>' +
+        '<button id="overlay-close" style="padding:14px 40px;border-radius:12px;background:#00ff88;color:#0a0a0a;border:none;font-weight:700;cursor:pointer;font-size:0.95rem">Закрыть</button>';
+    } else {
+      box.innerHTML = '<div style="font-size:3rem;margin-bottom:20px">&#9888;</div>' +
+        '<div style="font-size:1.2rem;font-weight:700;margin-bottom:12px">Не удалось отправить заявку</div>' +
+        '<div style="font-size:0.95rem;color:#a0a0a0;line-height:1.6;margin-bottom:20px">Попробуйте ещё раз через несколько секунд.<br>Если проблема повторится — свяжитесь с нами:</div>' +
+        '<div style="font-size:1rem;color:#00ff88;font-weight:600;margin-bottom:24px"><a href="tel:+73452922777" style="color:#00ff88;text-decoration:none">+7 (3452) 922-777</a></div>' +
+        '<button id="overlay-close" style="padding:14px 40px;border-radius:12px;background:rgba(255,255,255,0.08);color:#fff;border:1px solid rgba(255,255,255,0.1);font-weight:600;cursor:pointer;font-size:0.95rem">Закрыть</button>';
+    }
     overlay.appendChild(box);
     overlay.addEventListener('click', function(e) { if (e.target === overlay) overlay.remove(); });
     document.body.appendChild(overlay);
+    var closeBtn = document.getElementById('overlay-close');
+    if (closeBtn) {
+      closeBtn.addEventListener('click', function() { overlay.remove(); });
+      closeBtn.focus();
+    }
     var formEl = document.getElementById('leadForm');
-    if (formEl) formEl.reset();
+    if (formEl && success) formEl.reset();
     var tsField = document.getElementById('formTs');
     if (tsField) tsField.value = Date.now();
-    btn.focus();
   }
 
   document.addEventListener('DOMContentLoaded', function() {
@@ -188,13 +190,19 @@
     });
 
     var form = document.getElementById('leadForm');
+    var formSubmitting = false;
     if (form) {
       form.addEventListener('submit', async function(e) {
         e.preventDefault();
+        if (formSubmitting) return;
+        formSubmitting = true;
+
         var btn = form.querySelector('button[type="submit"]');
         var origText = btn.textContent;
-        btn.textContent = '\u041e\u0442\u043f\u0440\u0430\u0432\u043a\u0430...';
+        btn.innerHTML = '<span class="btn-spinner"></span> Отправляем...';
         btn.disabled = true;
+        btn.style.opacity = '0.7';
+        btn.style.pointerEvents = 'none';
 
         var fd = new FormData(form);
         var bNow = getBehavior();
@@ -223,8 +231,12 @@
           console.error('API error:', err);
           showOverlay(false);
         }
+
         btn.textContent = origText;
         btn.disabled = false;
+        btn.style.opacity = '';
+        btn.style.pointerEvents = '';
+        formSubmitting = false;
       });
     }
   });
