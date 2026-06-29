@@ -1,5 +1,5 @@
 (function(){
-  var API_URL = 'https://zaya-qo0z.onrender.com/api/lead';
+  var API_URL = (typeof ZAYA_CONFIG !== 'undefined' ? ZAYA_CONFIG.API_BASE_URL : 'https://zaya-backend.onrender.com') + '/api/lead';
   var pageLoadTime = Date.now();
   var viewedSections = {};
   var controller4Viewed = false;
