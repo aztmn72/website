@@ -226,9 +226,10 @@
         try {
           var response = await fetch(API_URL, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) });
           var result = await response.json();
+          console.log('[ZAYA] POST', API_URL, '→', response.status, result);
           showOverlay(result.success);
         } catch (err) {
-          console.error('API error:', err);
+          console.error('[ZAYA] fetch error:', err.message, err);
           showOverlay(false);
         }
 
