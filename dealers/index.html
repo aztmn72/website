@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Партнёрам — ZAYA</title>
+<meta name="description" content="Станьте партнёром ZAYA. Дилерские условия, техническая поддержка, обучение.">
+<link rel="icon" href="../assets/favicon.ico">
+<link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+
+<header class="header scrolled" role="banner">
+  <div class="container">
+    <a href="../" class="logo" aria-label="ZAYA — На главную">
+      <img src="../assets/logo.png" alt="ZAYA" width="44" height="44">
+      <span>ZAYA</span>
+    </a>
+    <nav class="nav" aria-label="Навигация">
+      <a href="../">Главная</a>
+      <a href="../#product">Продукт</a>
+      <a href="../#contact">Контакты</a>
+    </nav>
+    <div class="header-actions">
+      <a href="../#contact" class="btn btn-primary btn-sm">Оформить предзаказ</a>
+    </div>
+  </div>
+</header>
+
+<section class="section" style="padding-top:120px">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-label">Партнёрам</div>
+      <h2 class="section-title">Станьте партнёром ZAYA</h2>
+      <p class="section-desc">Мы ищем дилеров, монтажников и партнёров для развития сети по всей России.</p>
+    </div>
+
+    <div class="why-grid" style="margin-bottom:64px">
+      <div class="why-card">
+        <div class="why-icon">&#128176;</div>
+        <h3>Специальные цены</h3>
+        <p>Дилерские цены и гибкая система скидок для партнёров.</p>
+      </div>
+      <div class="why-card">
+        <div class="why-icon">&#128736;</div>
+        <h3>Техническая поддержка</h3>
+        <p>Полная техническая поддержка на всех этапах работы.</p>
+      </div>
+      <div class="why-card">
+        <div class="why-icon">&#127891;</div>
+        <h3>Обучение</h3>
+        <p>Обучение установке, настройке и работе с системой.</p>
+      </div>
+      <div class="why-card">
+        <div class="why-icon">&#128666;</div>
+        <h3>Приоритетные поставки</h3>
+        <p>Приоритетная очередь на поставку оборудования.</p>
+      </div>
+    </div>
+
+    <div class="compare-grid" style="max-width:800px">
+      <div class="contact-form-wrap">
+        <form class="contact-form" id="dealerForm">
+          <h3 style="margin-bottom:20px;font-size:1.1rem;font-weight:700">Заявка на партнёрство</h3>
+          <input type="hidden" name="source" value="zaya-dealers">
+          <div class="fg"><label for="d-name">Имя</label><input type="text" id="d-name" name="name" required autocomplete="name"></div>
+          <div class="fg"><label for="d-company">Компания</label><input type="text" id="d-company" name="company"></div>
+          <div class="fg"><label for="d-phone">Телефон</label><input type="tel" id="d-phone" name="phone" required autocomplete="tel" inputmode="tel" placeholder="+7 (___) ___-__-__"></div>
+          <div class="fg"><label for="d-city">Город</label><input type="text" id="d-city" name="city"></div>
+          <div class="fg"><label for="d-msg">Сообщение</label><textarea id="d-msg" name="message" rows="3"></textarea></div>
+          <input type="text" name="website" style="position:absolute;left:-9999px" tabindex="-1" autocomplete="off">
+          <input type="hidden" name="form_ts" id="formTs">
+          <button type="submit" class="btn btn-primary btn-lg" style="width:100%">Отправить заявку</button>
+        </form>
+      </div>
+      <div class="contact-info">
+        <h3>Контакты для партнёров</h3>
+        <div class="ci-item">
+          <div class="ci-icon">&#128241;</div>
+          <div><h4>Телефон</h4><p><a href="tel:+73452922777">+7 (3452) 922-777</a></p></div>
+        </div>
+        <div class="ci-item">
+          <div class="ci-icon">&#9993;</div>
+          <div><h4>Email</h4><p><a href="mailto:aztmn@mail.ru">aztmn@mail.ru</a></p></div>
+        </div>
+        <div class="ci-item">
+          <div class="ci-icon">&#9999;</div>
+          <div><h4>Telegram</h4><p><a href="https://t.me/zaya_official" target="_blank" rel="noopener">@zaya_official</a></p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="footer" role="contentinfo">
+  <div class="container">
+    <div class="footer-bottom">
+      <span>&copy; 2026 ZAYA. Все права защищены.</span>
+      <a href="../" style="color:var(--t3);font-size:0.85rem">На главную</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  var tsField = document.getElementById('formTs');
+  if (tsField) tsField.value = Date.now();
+
+  var phoneInput = document.querySelector('#d-phone');
+  if (phoneInput) {
+    function formatPhone(val) {
+      var d = val.replace(/\D/g, '');
+      if (d.startsWith('8') && d.length <= 11) d = '7' + d.slice(1);
+      if (d.length > 0 && d[0] !== '7') d = '7' + d;
+      d = d.slice(0, 11);
+      if (d.length === 0) return '';
+      var fmt = '+7';
+      if (d.length > 1) fmt += ' ' + d.slice(1, 4);
+      if (d.length > 4) fmt += ' ' + d.slice(4, 7);
+      if (d.length > 7) fmt += '-' + d.slice(7, 9);
+      if (d.length > 9) fmt += '-' + d.slice(9, 11);
+      return fmt;
+    }
+    phoneInput.addEventListener('input', function() {
+      var pos = this.selectionStart;
+      var oldLen = this.value.length;
+      this.value = formatPhone(this.value);
+      var newLen = this.value.length;
+      this.setSelectionRange(pos + (newLen - oldLen), pos + (newLen - oldLen));
+    });
+  }
+
+  var form = document.getElementById('dealerForm');
+  if (form) {
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+      var overlay = document.createElement('div');
+      overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:10000;display:flex;align-items:center;justify-content:center';
+      var box = document.createElement('div');
+      box.style.cssText = 'background:#141414;border:1px solid #00ff88;border-radius:12px;padding:40px;text-align:center;color:#fff;max-width:360px;margin:20px';
+      box.innerHTML = '<div style="font-size:2.5rem;margin-bottom:16px">\u2713</div><div style="font-size:1.2rem;font-weight:700;margin-bottom:8px">\u0417\u0430\u044f\u0432\u043a\u0430 \u043e\u0442\u043f\u0440\u0430\u0432\u043b\u0435\u043d\u0430!</div><div style="font-size:0.9rem;color:#a0a0a0;margin-bottom:20px">\u041c\u044b \u0441\u0432\u044f\u0436\u0435\u043c\u0441\u044f \u0441 \u0432\u0430\u043c\u0438 \u0432 \u0431\u043b\u0438\u0436\u0430\u0439\u0448\u0435\u0435 \u0432\u0440\u0435\u043c\u044f</div>';
+      var btn = document.createElement('button');
+      btn.style.cssText = 'padding:12px 32px;border-radius:12px;background:#00ff88;color:#0a0a0a;border:none;font-weight:700;cursor:pointer;font-size:0.95rem';
+      btn.textContent = '\u041e\u0442\u043b\u0438\u0447\u043d\u043e';
+      btn.addEventListener('click', function() { overlay.remove(); });
+      box.appendChild(btn);
+      overlay.appendChild(box);
+      overlay.addEventListener('click', function(e) { if (e.target === overlay) overlay.remove(); });
+      document.body.appendChild(overlay);
+      form.reset();
+      tsField.value = Date.now();
+    });
+  }
+});
+</script>
+</body>
+</html>
